@@ -1,0 +1,18 @@
+<ul class="nav">
+    {{#children}}
+    {{#leaf}}
+    <li><a href="#"><img src="{{icon}}"/>{{text}}</a></li>
+    {{/leaf}}
+    {{^leaf}}
+    <li>
+        <a href="#" class="sub" tabindex="1"><img src="{{#icon}}{{icon}}{{/icon}}{{^icon}}{{empty_icon}}{{/icon}}"/>{{text}}</a>
+        <img src="{{up_icon}}"/>
+        <ul>
+        {{#children}}
+            <li><a href="#"><img src="{{#icon}}{{icon}}{{/icon}}{{^icon}}{{empty_icon}}{{/icon}}"/>{{text}}</a></li>
+        {{/children}}
+        </ul>
+    </li>
+    {{/leaf}}
+    {{/children}}
+</ul>

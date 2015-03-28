@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%=title%></title>
+    <base href="<%=base%>" />
+</head>
+<body>
+<table>
+    <thead></thead>
+    <tbody>
+    <% var item;
+    for (var i = 0, l = fileList.length; i < l; i++) {
+    item = fileList[i];
+    %>
+    <tr>
+        <td><a href="<%=base + item.fileName%>"><%=item.fileName%></a></td>
+    </tr>
+    <%
+    }%>
+    </tbody>
+</table>
+</body>
+</html>

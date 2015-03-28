@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>ui.navigation.Accordian</title>
+    <script src="../Sizzle.js"></script>
+    <script src="../$.js"></script>
+    <script src="../ClassManager.js"></script>
+    <script src="../EventEmitter.js"></script>
+    <script src="../Require.js"></script>
+    <title></title>
+    <style>
+        .drag {
+            border: 2px solid #00ffff;
+            box-shadow: 1px 2px 1px rgba(0,0,0,0,4);
+            height: 240px;
+            width: 230px;
+        }
+        .animate {
+            border: 2px solid #00ffff;
+            box-shadow: 1px 2px 1px rgba(0,0,0,0,4);
+            height: 240px;
+            width: 230px;
+            background-color: #5f9ea0;
+        }
+    </style>
+</head>
+<script>
+    $(function() {
+        console.log(1);
+    });
+    $(function() {
+        $('.drag').dragdrop({start:function() {
+            console.log(arguments);
+        }});
+        function f1() {
+            console.log('f1');
+        }
+        function f2() {
+            console.log('f2');
+        }
+        $(document).on('click',f1).on('click', f2).on('focus', function() {
+            console.log('focus');
+            $(this).off('focus');
+        });
+    });
+
+    $(function(){
+        var deps = {
+            width300: {attr: 'w', to: 300, duration: 3000},
+            height200: {attr: 'h', to: 200},
+
+            height300: ['width300', {attr: 'h', to: 300}],
+            colorRed: {attr: 'c', to: "#aaaaaa", duration: 5000},
+            bgBlue: ['height300', 'colorRed', {attr: 'b', to: '#abcdef'}]
+        };
+        var deps2 = {opacity: { attr: 'o', to: 0.8, duration: 1000},
+            opacity2: ['opacity', {attr: 'o', from: 0, to: 1,updater:'sin'}]};
+        $(".animate").animate(deps2).animate(deps);
+    });
+
+
+</script>
+<body>
+<div class="drag"></div>
+<div class="animate"></div>
+</body>
+
+</html>

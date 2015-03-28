@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>ui.navigation.Accordian</title>
+    <script src="../../Sizzle.js"></script>
+    <script src="../../$.js"></script>
+    <script src="../../ClassManager.js"></script>
+    <script src="../../EventEmitter.js"></script>
+    <script src="../../Require.js"></script>
+    <script src="Accordian.config.js"></script>
+    <style>
+        body {
+            background-image: url('../../../images/body.png');
+        }
+        #container {
+            background: url("../../../images/robot.png") no-repeat scroll 90px 35px rgba(255, 255, 255, 0.6);
+            border: 1px solid #FFFFFF;
+            border-radius: 5px;
+            height: 400px;
+            margin: 20px auto;
+            padding: 10px;
+            position: relative;
+            width: 715px;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    require(['ui.navigation.Accordian'], function(Accordian) {
+        Config.contentEl = '#container';
+        var accordian = new Accordian(Config);
+        accordian.render();
+        accordian.on(Accordian.event.click, function(eventName, target) {
+            console.log(eventName, target);
+        });
+    })
+</script>
+</body>
+</html>

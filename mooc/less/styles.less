@@ -1,0 +1,57 @@
+@import "animation.less";
+
+@moveZ: { 0% {
+  .opacity(20);
+  #animation(1s; cubic-bezier(0, 1, 0, 1));
+  #translateZ(-900px);
+} 10% {
+    .opacity(100);
+    #translateZ(0px);
+  } 90% {
+      #translateZ(-7.60845px);
+      .opacity(100);
+      #animation(1s; cubic-bezier(1, 0, 1, 0));
+
+    } 100% {
+        .opacity(20);
+        #translateZ(900px);
+      } };
+
+#doKeyFrames(moveZ; @moveZ);
+
+.sanjiao {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  border-width: 10px;
+  border-style: solid dashed dashed dashed;
+  border-color: red transparent transparent transparent;
+}
+
+.triangle(left, @w:5px, @c:#ccc) {
+  border-width: @w;
+  border-color: transparent @c transparent transparent;
+  border-style: dashed solid dashed dashed;
+}
+.triangle(bottom, @w:5px, @c:#ccc) {
+  border-width: @w;
+  border-color: transparent transparent  @c transparent;
+  border-style: dashed dashed  solid dashed;
+}
+.triangle(@_, @w:5px, @c: #ccc) {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.sanjiao2 {
+  .triangle(left);
+}
+
+//避免编译
+.test_03 {
+  width: ~'calc(200px-30px)';
+}
+.test_important {
+  .border-radius()!important;
+}

@@ -1,0 +1,124 @@
+@import "mixins.less";
+.ui-navigation-accordian {
+    ul {
+        list-style-type: none;
+        width: 200px;
+        padding: 0;
+    }
+
+    .nav{
+        border:3px solid #3e4547;
+        .box-shadow(2px 2px 8px #000000);
+        .border-radius(3px);
+        ul {
+            position: relative;
+            z-index: -1;
+            li {
+                margin-top:-23px;
+                .transition(0.4s linear 0.4s);
+                a{
+                    background-color:#eee;
+                    border-bottom:1px solid #ccc;
+                    color:#000;
+                    font-size:11px;
+                    line-height:22px;
+                    img {
+                        background: url("/public/images/bulb.png") no-repeat;
+                        border-width:0px;
+                        height:16px;
+                        line-height:22px;
+                        margin-right:5px;
+                        vertical-align:middle;
+                        width:16px;
+                    }
+                }
+                a:hover {
+                    background-color:#ddd;
+                    color:#444;
+                }
+
+            }
+            li:nth-child(odd){
+                img {
+                    background:url("/public/images/bulb2.png") no-repeat;
+                }
+
+            }
+        }
+
+        li {
+            position: relative;
+            z-index: 100;
+            a {
+                background-color:#d4d5d8;
+                color:#000;
+                display:block;
+                font-size:12px;
+                font-weight:bold;
+                line-height:28px;
+                outline:0;
+                padding-left:15px;
+                text-decoration:none;
+
+                img {
+                    border-width:0px;
+                    height:24px;
+                    line-height:28px;
+                    margin-right:8px;
+                    vertical-align:middle;
+                    width:24px;
+                }
+                + img {
+                    cursor:pointer;
+                    display:none;
+                    height:28px;
+                    left:0;
+                    position:absolute;
+                    top:0;
+                    width:200px;
+                }
+            }
+
+            a.sub {
+                background:#d4d5d8 url("/public/images/down.gif") no-repeat;
+            }
+
+            a.sub:focus {
+                background:#bcbdc1;
+                outline:0;
+            }
+            a:hover {
+                background-color:#bcbdc1;
+            }
+        }
+
+        a:focus ~ ul  {
+            li {
+                margin-top:0;
+                .transition(0.4s linear);
+            }
+
+        }
+        a:focus + img, a:active + img {
+            display:block;
+        }
+        a.sub:active {
+            background:#bcbdc1;
+            outline:0;
+        }
+        a:active ~ ul  {
+            li{
+                margin-top:0;
+            }
+
+        }
+        ul:hover {
+            li{
+
+            }
+            margin-top:0;
+        }
+    }
+
+
+}

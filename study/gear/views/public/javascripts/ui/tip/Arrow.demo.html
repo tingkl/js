@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>ui.tip.Arrow</title>
+    <script src="../../Sizzle.js"></script>
+    <script src="../../$.js"></script>
+    <script src="../../ClassManager.js"></script>
+    <script src="../../EventEmitter.js"></script>
+    <script src="../../Require.js"></script>
+    <script src="Arrow.config.js"></script>
+    <style>
+        #container {
+           border: 1px solid #FFFFFF;
+            border-radius: 5px;
+            height: 400px;
+            margin: 20px auto;
+            padding: 10px;
+            position: relative;
+            width: 715px;
+            background-color: beige;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<script>
+    require(['ui.tip.Arrow'], function(Arrow) {
+        /*var tip = new Arrow(Config);
+        tip.show(function() {
+            tip.tip({left:100, top:100});
+        });*/
+        Arrow.wrap($('#container'), Config);
+    })
+</script>
+</body>
+</html>

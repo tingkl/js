@@ -1,0 +1,164 @@
+#text-shadow(@shadow: 0 1.5px 1px #0d5b9a) {
+    @{vendor}text-shadow: @shadow;
+}
+
+.opacity(@opacity: 100) {
+  opacity: @opacity / 100;
+  filter: e(%("alpha(opacity=%d)", @opacity));
+}
+.text-shadow(@shadow: 0 1.5px 1px #0d5b9a) {
+    -moz-text-shadow: @shadow;
+    -webkit-text-shadow: @shadow;
+    -o-text-shadow: @shadow;
+    text-shadow: @shadow;
+}
+.background-clip(@clip) {
+    -moz-background-clip: @clip;
+    -webkit-background-clip: @clip;
+    -o-background-clip: @clip;
+    background-clip: @clip;
+}
+#border-radius(@radius: 5px) {
+    @{vendor}border-radius: @radius;
+}
+.border-radius(@radius: 5px) {
+    -moz-border-radius: @radius;
+    -webkit-border-radius: @radius;
+    -o-border-radius: @radius;
+    border-radius: @radius;
+}
+#box-shadow(@shadow: 0 1px 3px rgba(0,0,0,.25)) {
+    @{vendor}box-shadow: @shadow;
+}
+.box-shadow(@shadow: 0 1px 3px rgba(0,0,0,.25)) {
+    -moz-box-shadow: @shadow;
+    -webkit-box-shadow: @shadow;
+    -o-box-shadow: @shadow;
+    box-shadow: @shadow;
+}
+#box-shadows(...) {
+    @{vendor}box-shadow: e(%('%s', @arguments));
+}
+.box-shadows(...) {
+    box-shadow: e(%('%s', @arguments));
+}
+.animation(...) {
+    -webkit-animation: e(%('%s', @arguments));
+    -moz-animation: e(%('%s', @arguments));
+    -o-animation: e(%('%s', @arguments));
+    animation: e(%('%s', @arguments));
+}
+#transform-origin(@arg) {
+    @{vendor}transform-origin: @arg;
+}
+.transform-origin(@arg) {
+    -moz-transform-origin: @arg;
+    -webkit-transform-origin: @arg;
+    -o-transform-origin: @arg;
+    transform-origin: @arg;
+}
+#doKeyFrames(@name; @frames) {
+    @-webkit-keyframes @name {
+        @vendor: -webkit-;
+        @frames();
+    }
+    @-moz-keyframes @name {
+        @vendor: -moz-;
+        @frames();
+    }
+    @-o-keyframes @name {
+        @vendor: -o-;
+        @frames();
+    }
+    @keyframes @name {
+        @vendor: ~'';
+        @frames();
+    }
+}
+#transition(@arg) {
+    @{vendor}transition: @arg;
+}
+#background-linear-gradient(@arg, @xy) {
+    background: e(%("%dlinear-gradient(%d) %d", @vendor, @arg, @xy));
+}
+#background-linear-gradient5(
+    @arg1, @xy1: 0 50%,
+    @arg2, @xy2: 0 50%,
+    @arg3, @xy3: 0 50%,
+    @arg4, @xy4: 0 50%,
+    @arg5, @xy5: 0 50%) {
+    background: e(%("%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d",
+     @vendor, @arg1, @xy1,
+     @vendor, @arg2, @xy2,
+     @vendor, @arg3, @xy3,
+     @vendor, @arg4, @xy4,
+     @vendor, @arg5, @xy5));
+}
+.background-linear-gradient5(
+    @arg1, @xy1: 0 50%,
+    @arg2, @xy2: 0 50%,
+    @arg3, @xy3: 0 50%,
+    @arg4, @xy4: 0 50%,
+    @arg5, @xy5: 0 50%) {
+    @vendorM: -moz-;
+    background: e(%("%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d",
+     @vendorM, @arg1, @xy1,
+     @vendorM, @arg2, @xy2,
+     @vendorM, @arg3, @xy3,
+     @vendorM, @arg4, @xy4,
+     @vendorM, @arg5, @xy5));
+    @vendorW: -webkit-;
+    background: e(%("%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d",
+     @vendorW, @arg1, @xy1,
+     @vendorW, @arg2, @xy2,
+     @vendorW, @arg3, @xy3,
+     @vendorW, @arg4, @xy4,
+     @vendorW, @arg5, @xy5));
+    @vendorO: -o-;
+    background: e(%("%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d,%dlinear-gradient(%d) %d",
+     @vendorO, @arg1, @xy1,
+     @vendorO, @arg2, @xy2,
+     @vendorO, @arg3, @xy3,
+     @vendorO, @arg4, @xy4,
+     @vendorO, @arg5, @xy5));
+    background: e(%("linear-gradient(%d) %d,linear-gradient(%d) %d,linear-gradient(%d) %d,linear-gradient(%d) %d,linear-gradient(%d) %d",
+     @arg1, @xy1,
+     @arg2, @xy2,
+     @arg3, @xy3,
+     @arg4, @xy4,
+     @arg5, @xy5));
+}
+#transition-timing-function(@function) {
+    @{vendor}transition-timing-function: @function;
+}
+.transition-timing-function(@function) {
+    -moz-transition-timing-function: @function;
+    -webkit-transition-timing-function: @function;
+    -o-transition-timing-function: @function;
+    transition-timing-function: @function;
+}
+#animation(@time, @function) {
+  @{vendor}animation: @time @function;
+}
+#animation-timing-function(@function) {
+    @{vendor}animation-timing-function: @function;
+}
+.animation-timing-function(@function) {
+    -moz-animation-timing-function: @function;
+    -webkit-animation-timing-function: @function;
+    -o-animation-timing-function: @function;
+    animation-timing-function: @function;
+}
+
+#transform(@argument) {
+    @{vendor}transform: @arguments;
+}
+#translateZ(@z) {
+  @{vendor}transform: translateZ(@z);
+}
+.transform(@argument) {
+    -moz-transform: @arguments;
+    -webkit-transform: @arguments;
+    -o-transform: @arguments;
+    transform: @arguments;
+}

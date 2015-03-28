@@ -1,0 +1,33 @@
+.ui-tip-arrow {
+  background-color: #f5f5f5;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  border: 1px solid #cccccc;
+  position: absolute;
+  padding: 5px;
+  min-width: 20px;
+  display: none;
+}
+.ui-tip-arrow .content {
+  font: normal 14px/16px "microsoft yahei", "宋体", "arial";
+  color: #3c3c3c;
+}
+.ui-tip-arrow .arrow {
+  left: 10px;
+  position: absolute;
+  top: -16px;
+}
+.ui-tip-arrow .arrow em,
+.ui-tip-arrow .arrow ins {
+  border-style: dashed dashed solid;
+  border-width: 8px;
+  border-color: transparent transparent #cccccc;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.ui-tip-arrow .arrow ins {
+  top: 2px;
+  border-color: transparent transparent #f5f5f5;
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%=title%></title>
+    <script src="public/javascripts/Sizzle.js"></script>
+    <script src="public/javascripts/$.js"></script>
+    <script src="public/javascripts/ClassManager.js"></script>
+    <script src="public/javascripts/EventEmitter.js"></script>
+    <script src="public/javascripts/Require.js"></script>
+
+    <script>
+        require(["a.b.a", "Ajax", "Test1", 'ui.Widget'], function() {
+            var test1 = ClassManager.create('Test1',{});
+            var widget = ClassManager.get('ui.Widget');
+            var a = new widget({hello_widget:'hello world!'});
+            a.show();
+            setTimeout(function(){
+                a.config = {hello_widget:'hello world2!'};
+                a.refresh();
+            },2000)
+
+        });
+        /*require(['Ajax',"a.b.a", "Test1", "Template"], function() {
+            console.log(window.Ajax, Template);
+            Ajax.async('get', 'ajax').then(function() {
+                console.log(arguments, '...');
+            });
+            var result = Ajax.sync('get', 'ajax');
+            console.log(result);
+            var test1 = ClassManager.create('Test1',{});
+            console.log(test1);
+
+
+        });*/
+        /*
+         require("a.b.c");
+        var a = ClassManager.create('EventEmitter');
+        a.on('a', function() {
+            console.log('a1');
+        });
+        a.once('a', function() {
+            console.log('once a2');
+        });
+        a.emit('a');
+        console.log('...........................................');
+        a.emit('a');*/
+    </script>
+</head>
+<body>
+
+</body>
+</html>
