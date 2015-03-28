@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="container">
+    <div id="sidebar">
+        <h1>HTML5 Camera</h1>
+        <video id="video" autoplay="false"></video>
+        <button id="takePicture">Snap</button>
+        <div id="files">
+
+            <h2>File Browser</h2>
+            <ul id="file-list"></ul>
+        </div>
+    </div>
+    <ul id="pictures">
+    </ul>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="../uuid.js"></script>
+<script src="../fs.js"></script>
+<script>
+    var fs = require('fs');
+    var dir = "images/";
+    function getRealPath(path) {
+        if (typeof path === 'string') {
+            return dir + path;
+        } else if ('path' in path) {
+            path.path = dir + path.path;
+            return path;
+        } else {
+            throw "err";
+        }
+    }
+    function getVirtualPath(path) {
+        if (path.indexOf(dir) > -1) {
+            path = path.substring(dir.length + 1);
+        }
+        return path;
+    }
+    function startCapture() {
+        var video = $("#video");
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+        if (navigator.getUserMedia) {
+            navigator.getUserMedia({video: true}, function (stream) {
+                video.attr('src', window.URL.createObjectURL(stream));
+            }, function (error) {
+                alert(error);
+            });
+        }
+        else {
+            alert("navigator.getUserMedia  Error");
+        }
+    }
+
+    fs.requestQuota(fs.P, 5 * 1024 * 1024 * 1024 /*5MB*/, function (err, fs, size) {
+        fs.mkdir(getRealPath(''), function (err, dirEntry) {
+            var index = 0;
+            var fileList = $('#file-list');
+            startCapture();
+            listFiles();
+            $('#takePicture').click(function () {
+                var video = $('#video');
+                var width = video.width() / 3 * 2;
+                var height = video.height() / 3 * 2;
+                drawImage(video[0], width, height);
+
+            });
+            function drawImage(img, width, height) {
+
+
+                var pictures = $('#pictures');
+                var dom = '<div class="actions">' +
+                        '<div class="share">' +
+                        '<img class="download" src="images/glyphicons_200_download.png">' +
+                        '<img class="intent" src="images/glyphicons_326_share.png">' +
+                        '</div>' +
+                        '<img class="delete" src="images/glyphicons_016_bin.png"></a>' +
+                        '</div>';
+                var li = $('<li id="li' + (index++) + '"><canvas width="' + width + 'px" height="' + height + 'px"></canvas>' + dom + '</li>').appendTo(pictures);
+                var canvasObj = li.children('canvas')[0];
+                var context = canvasObj.getContext('2d');
+                context.fillStyle = "#ffffff";
+                context.fillRect(0, 0, width, height);
+                context.drawImage(img, 0, 0, width, height);
+            }
+            function displayEntries(entries) {
+                entries.forEach(function (entry, i) {
+                    fileList.append($('<li><a class="edit-file"  name="' + getVirtualPath(entry.fullPath) + '" isDir="' + entry.isDirectory + '" >'
+                            + getVirtualPath(entry.fullPath) + '</a>' +
+                            '<a class="delete-file" name="' + getVirtualPath(entry.fullPath) + '" isDir="' + entry.isDirectory + '">[x]</a></li>'));
+                });
+            }
+            function loadFile(filename) {
+                fs.readFile(getRealPath(filename), {type:'text/plain'}, function (err, data) {
+                    if (err) {
+                        alert(err);
+                    } else {
+                        var img = new Image();
+                        img.src = data;
+                        var video = $('#video');
+                        var width = video.width() / 3 * 2;
+                        var height = video.height() / 3 * 2;
+                        drawImage(img, width, height);
+                    }
+                });
+            }
+            function deleteFile(filename) {
+                fs.unlink(getRealPath(filename), function (err) {
+                    if (err) {
+                        alert(err);
+                    } else {
+                        listFiles();
+                    }
+                });
+            }
+
+            function deleteDir(filename) {
+                fs.rmdir(getRealPath(filename), function (err) {
+                    if (err) {
+                        alert(err);
+                    } else {
+                        listFiles();
+                    }
+                });
+            }
+            function listFiles() {
+                function walk(err, fileEntries) {
+                    if (err) {
+                        alert(err);
+                    } else {
+                        displayEntries(fileEntries);
+
+                        fileEntries.forEach(function (entry) {
+                            if (entry.isDirectory) {
+                                fs.readdir(entry, walk);
+                            }
+                        });
+                    }
+                }
+
+                fileList.html('');
+                fs.readdir(getRealPath(''), walk);
+            }
+
+            $("#pictures").click(function (e) {
+                var target = e.target;
+                var className = target.className.toLowerCase();
+
+                if (className === 'intent') {
+                    fs.writeFile(getRealPath(Math.uuid(10)+".png"), {data: $(target).parent().parent().parent().find('canvas')[0].toDataURL('image/png'), type: 'text/plain'}, function (err) {
+                        if (err) {
+                            throw err;
+                        }
+
+                        listFiles();
+                    });
+                }
+            });
+
+            fileList.on('click', function (e) {
+                var target = e.target;
+                if (target.className === 'edit-file') {
+                    e.preventDefault();
+                    var $target = $(target);
+                    if (!($target.attr('isDir') === true || $target.attr('isDir') === 'true')) {
+                        loadFile($(target).attr('name'));
+                    }
+
+                } else if (target.className === 'delete-file') {
+                    e.preventDefault();
+                    var $target = $(target);
+                    if ($target.attr('isDir') === true || $target.attr('isDir') === 'true') {
+                        deleteDir($target.attr('name'));
+                    } else {
+                        deleteFile($target.attr('name'));
+                    }
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>

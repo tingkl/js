@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="container">
+    <div id="sidebar">
+        <h1>Disk</h1>
+
+        <div id="files">
+            <h2>File Browser</h2>
+            <ul id="file-list"></ul>
+            <div id="img" class="clearfix">
+                <p>
+                    <label>请选择一个图像文件：</label>
+                    <input type="file" id="file" accept="image/gif,image/jpg,image/png"/>
+                    <input type="button" id="save" value="save"/>
+                    <progress id="progress" max="100" value=""/>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div name="result" id="result"></div>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="../fs.js"></script>
+<script type="text/javascript">
+    var result = document.getElementById('result');
+    if (typeof FileReader == 'undefined') {
+        result.innerHTML = '<p>抱歉，您的浏览器不支持FileReader</p>';
+        var file = document.getElementById('file');
+        file.setAttribute('disabled', 'disabled');
+    }
+</script>
+<script>
+    var fs = require('fs');
+    var dir = "disk/";
+    function getRealPath(path) {
+        if (typeof path === 'string') {
+            return dir + path;
+        } else if ('path' in path) {
+            path.path = dir + path.path;
+            return path;
+        } else {
+            throw "err";
+        }
+    }
+    function getVirtualPath(path) {
+        if (path.indexOf(dir) > -1) {
+            path = path.substring(dir.length + 1);
+        }
+        return path;
+    }
+
+    fs.requestQuota(fs.P, 5 * 1024 * 1024 * 1024 /*5MB*/, function (err, fs, size) {
+        fs.mkdir(getRealPath(''), function (err, dirEntry) {
+            var fileList = $('#file-list');
+            listFiles();
+            $('#save').click(function() {
+                var file = document.getElementById('file').files[0];
+                var result = document.getElementById('result');
+                var reader = new FileReader();
+                reader.onload = function (e) {
+
+                    if (file.type === "image/png") {
+                        result.innerHTML = "<img src='" + this.result + "' />";
+                    } else {
+                        result.innerHTML = this.result;
+                    }
+                    fs.writeFile(getRealPath(file.name), {data: this.result}, function(err) {
+                        if (err) {
+                            throw err;
+                        } else {
+                            listFiles();
+                        }
+                    });
+                }
+                reader.onprogress = function (e) {
+                    var total = e.total;
+                    var loaded = e.loaded;
+                    var progress = document.getElementById('progress');
+                    progress.value = (loaded / total) * progress.max;
+                }
+                reader.onloadend = function (e) {
+                    if (e.total != 0) {
+                        var progress = document.getElementById('progress');
+                        progress.value = progress.max;
+                    }
+                }
+                if (file.type === 'image/png') {
+                    reader.readAsDataURL(file);
+                } else {
+                    // reader.readAsBinaryString(file);
+                    //reader.readAsText(file);
+                    reader.readAsArrayBuffer(file);
+                }
+
+            });
+            function displayEntries(entries) {
+                entries.forEach(function (entry, i) {
+                    fileList.append($('<li><a class="edit-file"  name="' + getVirtualPath(entry.fullPath) + '" isDir="' + entry.isDirectory + '" >'
+                            + getVirtualPath(entry.fullPath) + '</a>' +
+                            '<a class="delete-file" name="' + getVirtualPath(entry.fullPath) + '" isDir="' + entry.isDirectory + '">[x]</a></li>'));
+                });
+            }
+
+            function loadFile(filename) {
+                fs.readFile(getRealPath(filename), {type: 'text/plain'}, function (err, data) {
+                    if (err) {
+                        alert(err);
+                    } else {
+
+                        $('#result').html("<img src='" + data + "' />");
+                    }
+                });
+            }
+
+            function deleteFile(filename) {
+                fs.unlink(getRealPath(filename), function (err) {
+                    if (err) {
+                        alert(err);
+                    } else {
+                        listFiles();
+                    }
+                });
+            }
+
+            function deleteDir(filename) {
+                fs.rmdir(getRealPath(filename), function (err) {
+                    if (err) {
+                        alert(err);
+                    } else {
+                        listFiles();
+                    }
+                });
+            }
+
+            function listFiles() {
+                function walk(err, fileEntries) {
+                    if (err) {
+                        alert(err);
+                    } else {
+                        displayEntries(fileEntries);
+                        fileEntries.forEach(function (entry) {
+                            if (entry.isDirectory) {
+                                fs.readdir(entry, walk);
+                            }
+                        });
+                    }
+                }
+                fileList.html('');
+                fs.readdir(getRealPath(''), walk);
+            }
+
+            fileList.on('click', function (e) {
+                var target = e.target;
+                if (target.className === 'edit-file') {
+                    e.preventDefault();
+                    var $target = $(target);
+
+                    if (!($target.attr('isDir') === true || $target.attr('isDir') === 'true')) {
+                        loadFile($(target).attr('name'));
+                    }
+                } else if (target.className === 'delete-file') {
+                    e.preventDefault();
+                    var $target = $(target);
+                    if ($target.attr('isDir') === true || $target.attr('isDir') === 'true') {
+                        deleteDir($target.attr('name'));
+                    } else {
+                        deleteFile($target.attr('name'));
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+body {
+    background: transparent url("images/background.jpg") repeat 50% 50%;
+    color: #9f9082;
+    margin: 0;
+}
+#container {
+    padding: 0 20px;
+}
+#sidebar {
+    background: none repeat scroll 0 0 rgba(41, 33, 29, 0.72);
+    border: 1px dashed #6f5d4d;
+    display: inline-block;
+    height: 100%;
+    left: auto;
+    margin-left: 20px;
+    text-align: center;
+    top: 0;
+    position: fixed;
+    width: 460px;
+    z-index: 100;
+    overflow-y: scroll;
+}
+#video {
+    height: 340px;
+    width: 100%;
+}
+#countdown {
+    margin: 30px 0;
+}
+#countdown span {
+    font-size: 5em;
+    color: #d8c7b8;
+    opacity: .1;
+    margin: 0px 50px 0px 50px;
+}
+#takePicture {
+    text-transform: uppercase;
+    color: #d8c7b8;
+    text-shadow: 1px 0 3px #000;
+    border: 0;
+    background: transparent url("images/button.png") no-repeat 50% 0;
+    width: 123px;
+    height: 57px;
+    vertical-align: middle;
+}
+#pictures {
+    margin:40px 0 0 440px;
+    list-style-type: none;
+    overflow: hidden;
+
+}
+#pictures li {
+    float: left;
+    margin: 0 0 10px 10px;
+    padding: 10px;
+    background: white;
+    border: 1px dashed rgba(41,33,29,0.72);
+}
+
+#pictures li canvas {
+    border: 1px solid #0088cc;
+}
+#countdown span {
+    transition:all 2s;
+}
+.share {
+    float: left;
+}
+.delete {
+    float: right;
+}
+
+#file-list {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    overflow-y: auto;
+    list-style: none;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+a,
+a:visited {
+    color: #08C;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: #69c773;
+    cursor: pointer;
+}
+
+a.delete-file,
+a.delete-file:visited {
+    color: #CC0000;
+    margin-left: 0.5rem;
+}
