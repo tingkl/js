@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="ejs.js"></script>
+    <script id="template" type="application/x-ejs">
+        <div class='classA'>
+        <%=title%>
+    </div>
+    <%
+    var index = 100;
+    function a() {
+    return index--;
+    }
+    for(var i =0;
+    i < options.length; i++) {
+    /*console.log("\"", '"',options[i]);*/
+        %>
+        <li index="<%=a()%>" class="classB"><%=options[i]%></li>
+        <%
+        }
+        %>
+        <div>author:dingguoliang01@baidu.com</div>
+    </script>
+    <style>
+        .classA {
+            border: 1px solid teal;
+            background-color: #5f9ea0;
+        }
+        .classB {
+            border: 1px solid seagreen;
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+<div id="area"></div>
+<script>
+    var config = {
+        title: 'ejs模板',
+        options: ["</li>", 2, 3, 4]
+    };
+    var out = ejs.render(document.getElementById('template').innerHTML, config);
+    document.getElementById('area').innerHTML = out;
+    function change() {
+        var config = {
+            title: 'ejs模板' + Math.ceil(Math.random() * 1000),
+            options: ["</li>", Math.ceil(Math.random() * 1000), Math.ceil(Math.random() * 1000), Math.ceil(Math.random() * 1000)]
+        };
+        var out = ejs.render(document.getElementById('template').innerHTML, config);
+        document.getElementById('area').innerHTML = out;
+    }
+</script>
+<input type="button" value="change" onclick="change()">
+</body>
+</html>
