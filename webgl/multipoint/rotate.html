@@ -10,10 +10,13 @@
 <script src="../lib/webgl-debug.js"></script>
 <script src="../lib/cuon-utils.js"></script>
 <pre id="vshader">
-    attribute vec4 a_Position;
+    attribute vec4 a_Position; // attribute用来传输跟顶点有关的
+    uniform float u_CosB, u_SinB;
     void main() {
-       gl_Position = a_Position;
-       gl_PointSize = 10.0;
+       gl_Position.x = a_Position.x * u_CosB - a_Position.y * u_SinB;
+       gl_Position.y = a_Position.x * u_SinB + a_Position.y * u_CosB;
+       gl_Position.z = a_Position.z;
+       gl_Position.w = 1.0;
     }
 </pre>
 <pre id="fshader">
@@ -31,6 +34,18 @@
     initShaders(gl, VSHADER_SOURCE, FSHADER_COURCE);
 
     var n = initVertexBuffers(gl);
+
+    var ANGLE = 90.0;
+    var radian = Math.PI * ANGLE / 180.0;
+    var cosB = Math.cos(radian);
+    var sinB = Math.sin(radian);
+
+    var u_CosB = gl.getUniformLocation(gl.program, 'u_CosB');
+    var u_SinB = gl.getUniformLocation(gl.program, 'u_SinB');
+
+    gl.uniform1f(u_CosB, cosB);
+    gl.uniform1f(u_SinB, sinB);
+
     var a_Position = gl.getAttribLocation(gl.program, 'a_Position');
     if (a_Position < 0) {
         console.log('Failed to get the storage location of a_Position');
@@ -39,7 +54,7 @@
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
-    gl.drawArrays(gl.POINTS, 0 , n);
+    gl.drawArrays(gl.TRIANGLES, 0 , n);
 
     function initVertexBuffers(gl) {
         var vertices = new Float32Array([0.0, 0.5, -0.5, -0.5, 0.5, -0.5]);
