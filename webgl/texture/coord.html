@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<canvas id="webgl" width="400" height="400"></canvas>
+<script src="../lib/webgl-utils.js"></script>
+<script src="../lib/webgl-debug.js"></script>
+<script src="../lib/cuon-utils.js"></script>
+<script src="../lib/cuon-matrix.js"></script>
+<pre id="vshader">
+    attribute vec4 a_Position; // attribute用来传输跟顶点有关的
+    void main() {
+       gl_Position = a_Position;
+    }
+</pre>
+<pre id="fshader">
+    precision mediump float;
+    uniform float u_Width;
+    uniform float u_Height;
+    void main() {
+       gl_FragColor = vec4(gl_FragCoord.x/u_Width, 0.0, gl_FragCoord.y/u_Height, 1.0);
+    }
+</pre>
+<script>
+    var VSHADER_SOURCE = document.getElementById('vshader').innerHTML;
+    var FSHADER_COURCE = document.getElementById('fshader').innerHTML;
+    var canvas = document.getElementById('webgl');
+    var gl = getWebGLContext(canvas);
+    initShaders(gl, VSHADER_SOURCE, FSHADER_COURCE);
+
+    var n = initVertexBuffers(gl);
+
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0 , n);
+
+    function initVertexBuffers(gl) {
+        var verticesColors = new Float32Array([
+            0.0, 0.5,
+            -0.5, -0.5,
+            0.5, -0.5]);
+        var n = 3;
+        var vertexBuffer = gl.createBuffer();
+        if (!vertexBuffer) {
+            console.log('Failed to create the buffer object!');
+        }
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+        gl.bufferData(gl.ARRAY_BUFFER, verticesColors, gl.STATIC_DRAW);
+
+        var a_Position = gl.getAttribLocation(gl.program, 'a_Position');
+        var FSIZE = verticesColors.BYTES_PER_ELEMENT;
+        gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, FSIZE * 2, 0);
+        gl.enableVertexAttribArray(a_Position); //从函数名看出只针对attribute
+        var u_Width = gl.getUniformLocation(gl.program, 'u_Width');
+        gl.uniform1f(u_Width, gl.drawingBufferWidth);
+        var u_Height = gl.getUniformLocation(gl.program, 'u_Height');
+        gl.uniform1f(u_Height, gl.drawingBufferHeight);
+        return n;
+    }
+</script>
+</body>
+</html>
